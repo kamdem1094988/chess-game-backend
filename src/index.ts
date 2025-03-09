@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-// import sequelize from './database';
+import { jwtMiddleware } from './middlewares/jwtMiddleware';
 
 dotenv.config();
 
@@ -11,13 +11,11 @@ app.use(cors());
 
 const PORT = process.env.PORT || 3000;
 
-// Testez temporairement sans se connecter à la BDD
-// sequelize.authenticate()
-//   .then(() => console.log('Connexion à la BDD réussie !'))
-//   .catch(err => console.error('Erreur de connexion à la BDD :', err));
-
-app.get('/', (req: Request, res: Response) => {
-  res.send('Serveur Jeu d’Échecs opérationnel !');
+app.get('/protected', jwtMiddleware, (req: Request, res: Response) => {
+  res.json({
+    message: 'Accès autorisé',
+    user: res.locals.user  // Utilisation de res.locals.user
+  });
 });
 
 app.listen(PORT, () => {
