@@ -16,7 +16,7 @@ app.get('/protected', jwtMiddleware, (req: Request, res: Response) => {
     message: 'Accès autorisé',
     user: res.locals.user  // Utilisation de res.locals.user
   });
-});
+})
 
 app.listen(PORT, () => {
   console.log(`Serveur lancé sur le port ${PORT}`);
