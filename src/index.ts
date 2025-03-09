@@ -1,6 +1,7 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { GameController } from './controllers/GameController';
 import { jwtMiddleware } from './middlewares/jwtMiddleware';
 
 dotenv.config();
@@ -11,12 +12,7 @@ app.use(cors());
 
 const PORT = process.env.PORT || 3000;
 
-app.get('/protected', jwtMiddleware, (req: Request, res: Response) => {
-  res.json({
-    message: 'Accès autorisé',
-    user: res.locals.user  // Utilisation de res.locals.user
-  });
-})
+app.post('/games', jwtMiddleware, GameController.createGame);
 
 app.listen(PORT, () => {
   console.log(`Serveur lancé sur le port ${PORT}`);
