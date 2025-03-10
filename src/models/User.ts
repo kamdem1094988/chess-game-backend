@@ -3,16 +3,22 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../database';
 
+// Mise à jour de l'interface pour inclure "password"
 interface UserAttributes {
   id?: number;
   email: string;
+  password: string;  // Ajout du champ password
   tokens: number;
   role: 'admin' | 'user';
 }
 
+/**
+ * Classe représentant un utilisateur.
+ */
 class User extends Model<UserAttributes> implements UserAttributes {
   public id!: number;
   public email!: string;
+  public password!: string; // Propriété password ajoutée
   public tokens!: number;
   public role!: 'admin' | 'user';
 }
@@ -28,6 +34,10 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
+    },
+    password: {  // Définition du champ password
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     tokens: {
       type: DataTypes.FLOAT,
@@ -49,7 +59,4 @@ User.init(
 );
 
 export default User;
-
-// Pour s'assurer que le fichier est considéré comme un module,
-// ajoutez cette exportation vide si nécessaire :
-export {};
+export {};  // Pour s'assurer que le fichier est traité comme un module
