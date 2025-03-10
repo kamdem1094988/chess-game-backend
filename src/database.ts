@@ -1,15 +1,26 @@
+// src/database.ts
 import { Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
-
 dotenv.config();
 
 const sequelize = new Sequelize({
   dialect: 'sqlite',
-  storage: './database.sqlite'
+  storage: './database.sqlite', // ou un autre nom de fichier
 });
 
-sequelize.authenticate()
-  .then(() => console.log('Connexion à la BDD SQLite réussie !'))
-  .catch(err => console.error('Erreur de connexion à la BDD SQLite :', err));
+// Importez ici tous vos modèles
+import User from './models/User';
+import Game from './models/Game';
+import Move from './models/Move';
+
+// Synchronisation des modèles
+sequelize
+  .sync({ alter: true })
+  .then(() => {
+    console.log('Base de données synchronisée.');
+  })
+  .catch((err) => {
+    console.error('Erreur lors de la synchronisation de la BDD:', err);
+  });
 
 export default sequelize;
