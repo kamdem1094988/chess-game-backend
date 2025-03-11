@@ -5,7 +5,8 @@ import { GameController } from './controllers/GameController';
 import { MoveController } from './controllers/MoveController';
 import { AuthController } from './controllers/AuthController';
 import { HistoryController } from './controllers/HistoryController';
-import { RankingController } from './controllers/RankingController'; // Import du contrôleur de classement
+import { RankingController } from './controllers/RankingController';
+import { AdminController } from './controllers/AdminController';  // Import du contrôleur admin
 import { jwtMiddleware } from './middlewares/jwtMiddleware';
 
 dotenv.config();
@@ -24,9 +25,11 @@ app.post('/games', jwtMiddleware, GameController.createGame);
 app.post('/games/:id/move', jwtMiddleware, MoveController.makeMove);
 app.get('/games/:id/history', jwtMiddleware, HistoryController.getHistory);
 
-// Route publique pour obtenir le classement
-// Vous pouvez spécifier l'ordre avec le paramètre de query "order" (asc ou desc)
+// Route publique pour le classement
 app.get('/ranking', RankingController.getRanking);
+
+// Route admin pour recharger le crédit d'un utilisateur
+app.post('/admin/recharge', jwtMiddleware, AdminController.recharge);
 
 app.listen(PORT, () => {
   console.log(`Serveur lancé sur le port ${PORT}`);

@@ -4,9 +4,11 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+// Ajoutez "role" dans l'interface JwtPayload
 interface JwtPayload {
   id: number;
   email: string;
+  role: string;  // <-- Ajout du rôle
 }
 
 export const jwtMiddleware = (req: Request, res: Response, next: NextFunction): void => {
@@ -21,8 +23,12 @@ export const jwtMiddleware = (req: Request, res: Response, next: NextFunction): 
     return;
   }
   try {
+    // Vérifie et décode le token JWT
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as JwtPayload;
-    res.locals.user = decoded; // Stocke l'utilisateur dans res.locals
+
+    // Stocke l'utilisateur (y compris role) dans res.locals
+    res.locals.user = decoded;
+
     next();
   } catch (error) {
     res.status(401).json({ message: 'Token invalide.' });

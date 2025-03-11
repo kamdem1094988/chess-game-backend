@@ -28,9 +28,17 @@ export class AuthController {
         return;
       }
 
+      // Log pour vérifier que 'role' est bien chargé depuis la base
+      console.log("Utilisateur trouvé :", user.toJSON());
+
       // Génération du token JWT avec une expiration d'une heure
+      // Ajout du champ role pour que le middleware admin puisse vérifier si l'utilisateur est admin
       const token = jwt.sign(
-        { id: user.id, email: user.email },
+        {
+          id: user.id,
+          email: user.email,
+          role: user.role,  // <-- important pour inclure le rôle
+        },
         process.env.JWT_SECRET as string,
         { expiresIn: '1h' }
       );
