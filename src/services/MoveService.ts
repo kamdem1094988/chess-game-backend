@@ -23,13 +23,13 @@ export class MoveService {
       throw new Error('Partie non trouvée.');
     }
 
-    // Vérifier que l'utilisateur a assez de tokens pour jouer
+    // Récupérer l'utilisateur associé à la partie
     const user = await User.findByPk(game.userId);
     if (!user || user.tokens < 0.025) {
       throw new Error('Crédit insuffisant pour effectuer un mouvement.');
     }
 
-    // Déduire le coût du mouvement
+    // Déduction du coût du mouvement (0,025 tokens)
     user.tokens -= 0.025;
     await user.save();
 
@@ -43,13 +43,14 @@ export class MoveService {
       throw new Error('Mouvement invalide.');
     }
 
-    // Vérifier si la partie est terminée après le coup du joueur
+    // Exporter l'état mis à jour du jeu
     const updatedState = chess.exportJson();
+    // Si la partie est terminée (échec ou échec et mat), mettre à jour le statut
     if (updatedState.isFinished || updatedState.checkMate) {
       game.status = 'finished';
     }
 
-    // Sauvegarder le mouvement du joueur
+    // Sauvegarder le mouvement du joueur dans la table Move
     const moveCount = await Move.count({ where: { gameId } });
     await Move.create({
       gameId,
@@ -58,13 +59,13 @@ export class MoveService {
       moveNumber: moveCount + 1,
     });
 
-    // Vérifier si l'IA doit jouer (le tour est à "black")
+    // Vérifier si c'est au tour de l'IA (tour noir)
     if (updatedState.turn === 'black') {
       // L'IA joue un coup
       const aiMove = chess.aiMove();
       const aiMoveKeys = Object.entries(aiMove)[0]; // Exemple : [ 'e7', 'e5' ]
       const aiFrom = aiMoveKeys[0];
-      const aiTo = aiMoveKeys[1] as string; // Assertion : forcer aiTo à être une string
+      const aiTo = aiMoveKeys[1] as string; // Forcer le typage en string
 
       // Sauvegarder le mouvement de l'IA
       await Move.create({
@@ -74,7 +75,7 @@ export class MoveService {
         moveNumber: moveCount + 2,
       });
 
-      // Déduire les tokens de l'utilisateur pour le coup de l'IA
+      // Déduire les tokens de l'utilisateur pour le coup de l'IA (0,025 tokens)
       user.tokens -= 0.025;
       await user.save();
     }
@@ -87,5 +88,5 @@ export class MoveService {
   }
 }
 
-// Ajoutez cette ligne pour éviter que TypeScript considère le fichier comme vide
+// Export vide pour éviter que TypeScript considère le fichier comme vide
 export default {};
