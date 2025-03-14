@@ -13,10 +13,11 @@ export class GameHistoryController {
    * Des filtres optionnels sont disponibles via les query params : 
    * - startDate (YYYY-MM-DD)
    * - endDate (YYYY-MM-DD)
+   * - download (optionnel, si "true" le JSON est envoyé en téléchargement)
    */
   static async getHistory(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { startDate, endDate } = req.query;
+      const { startDate, endDate, download } = req.query;
       const filter: any = { status: 'finished' };
 
       // Filtre par date de début
@@ -52,8 +53,7 @@ export class GameHistoryController {
           const moveCount = await Move.count({ where: { gameId: game.id } });
           const state = JSON.parse(game.state);
           const result = state.checkMate ? 'vinta' : 'interrotta';
-
-          // Conversion manuelle de createdAt en chaîne, puis en objet Date, enfin toISOString()
+          // Conversion de createdAt en ISO string
           const startDateIso = game.createdAt
             ? new Date(String(game.createdAt)).toISOString()
             : null;
@@ -67,6 +67,11 @@ export class GameHistoryController {
         })
       );
 
+      // Si le paramètre download est "true", ajouter un header pour forcer le téléchargement
+      if (download === 'true') {
+        res.setHeader('Content-Disposition', 'attachment; filename="history.json"');
+      }
+      
       res.status(200).json(history);
     } catch (error) {
       next(error);
@@ -74,5 +79,4 @@ export class GameHistoryController {
   }
 }
 
-// Export vide pour que TypeScript considère ce fichier comme un module
 export {};
