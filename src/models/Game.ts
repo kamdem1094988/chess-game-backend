@@ -1,3 +1,4 @@
+
 // src/models/Game.ts
 
 import { DataTypes, Model } from 'sequelize';
@@ -10,6 +11,10 @@ interface GameAttributes {
   state: string;
   status: 'active' | 'finished' | 'abandoned';
   tokensSpent: number;
+  
+  // Ajout de createdAt et updatedAt pour le typage
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 /**
@@ -22,6 +27,10 @@ class Game extends Model<GameAttributes> implements GameAttributes {
   public state!: string;
   public status!: 'active' | 'finished' | 'abandoned';
   public tokensSpent!: number;
+
+  // Propriétés gérées automatiquement par Sequelize
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
 }
 
 Game.init(
@@ -58,8 +67,12 @@ Game.init(
     sequelize,
     modelName: 'Game',
     tableName: 'games',
-    timestamps: true,
+    timestamps: true, // Active createdAt et updatedAt
   }
 );
 
-export default Game; // Assurez-vous d'exporter le modèle !
+// Export par défaut pour pouvoir importer via "import Game from '../models/Game';"
+export default Game;
+
+// Export vide pour forcer le fichier à être traité comme un module
+export {};
