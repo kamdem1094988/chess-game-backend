@@ -7,7 +7,7 @@ interface UserAttributes {
   password: string;
   tokens: number;
   role: 'admin' | 'user';
-  // ... autres champs
+  score: number; // Nouveau champ pour le classement
 }
 
 class User extends Model<UserAttributes> implements UserAttributes {
@@ -16,6 +16,7 @@ class User extends Model<UserAttributes> implements UserAttributes {
   public password!: string;
   public tokens!: number;
   public role!: 'admin' | 'user';
+  public score!: number; // Nouveau champ
 }
 
 User.init(
@@ -40,9 +41,14 @@ User.init(
       defaultValue: 0,
     },
     role: {
-      type: DataTypes.ENUM('admin', 'user'), // ou DataTypes.STRING
+      type: DataTypes.ENUM('admin', 'user'),
       allowNull: false,
       defaultValue: 'user',
+    },
+    score: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+      defaultValue: 0,
     },
   },
   {

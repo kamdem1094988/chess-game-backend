@@ -8,7 +8,8 @@ import { HistoryController } from './controllers/HistoryController';
 import { RankingController } from './controllers/RankingController';
 import { AdminController } from './controllers/AdminController';  // Import du contrôleur admin
 import { jwtMiddleware } from './middlewares/jwtMiddleware';
-import { GameHistoryController } from './controllers/GameHistoryController';
+import { GameHistoryController } from './controllers/GameHistoryController'; // export class GameHistoryController
+import GameStatusController from './controllers/GameStatusController';       // export default class GameStatusController
 
 dotenv.config();
 
@@ -32,10 +33,11 @@ app.get('/ranking', RankingController.getRanking);
 // Route admin pour recharger le crédit d'un utilisateur
 app.post('/admin/recharge', jwtMiddleware, AdminController.recharge);
 
-//route pour recuperer l'historique des partie gagner et perdu 
+// Route pour récupérer l'historique des parties gagnées et perdues
 app.get('/games/history', jwtMiddleware, GameHistoryController.getHistory);
-//app.get('/games/history', /* jwtMiddleware, */ GameHistoryController.getHistory);
 
+// Route pour évaluer l'état d'une partie
+app.get('/games/:id/status',  jwtMiddleware,  GameStatusController.evaluateStatus);
 
 app.listen(PORT, () => {
   console.log(`Serveur lancé sur le port ${PORT}`);
