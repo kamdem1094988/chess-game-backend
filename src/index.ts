@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { GameController } from './controllers/GameController';
@@ -37,7 +37,16 @@ app.post('/admin/recharge', jwtMiddleware, AdminController.recharge);
 app.get('/games/history', jwtMiddleware, GameHistoryController.getHistory);
 
 // Route pour évaluer l'état d'une partie
-app.get('/games/:id/status',  jwtMiddleware,  GameStatusController.evaluateStatus);
+app.get('/games/:id/status', jwtMiddleware, GameStatusController.evaluateStatus);
+
+// Middleware global de gestion des erreurs
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  console.error('Erreur interceptée:', err);
+  const statusCode = res.statusCode !== 200 ? res.statusCode : 500;
+  res.status(statusCode).json({
+    message: err.message || 'Une erreur est survenue.',
+  });
+});
 
 app.listen(PORT, () => {
   console.log(`Serveur lancé sur le port ${PORT}`);

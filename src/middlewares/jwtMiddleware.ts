@@ -1,20 +1,22 @@
+// src/middlewares/jwtMiddleware.ts
+
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import User from '../models/User';
 
 dotenv.config();
 
-// Ajoutez "role" dans l'interface JwtPayload
 interface JwtPayload {
   id: number;
   email: string;
-  role: string;  // <-- Ajout du rôle
+  role: string; 
 }
 
-export const jwtMiddleware = (req: Request, res: Response, next: NextFunction): void => {
+export const jwtMiddleware = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const authHeader = req.headers.authorization;
   if (!authHeader) {
-    res.status(401).json({ message: 'Accès refusé. Pas de token.' });
+    res.status(401).json({ message: 'Pas de token.' });
     return;
   }
   const token = authHeader.split(' ')[1];
@@ -23,11 +25,24 @@ export const jwtMiddleware = (req: Request, res: Response, next: NextFunction): 
     return;
   }
   try {
-    // Vérifie et décode le token JWT
+    // Vérifier le token JWT
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as JwtPayload;
+    
+    // Récupérer l'utilisateur en base
+    const user = await User.findByPk(decoded.id);
+    if (!user) {
+      res.status(401).json({ message: 'Utilisateur introuvable.' });
+      return;
+    }
 
-    // Stocke l'utilisateur (y compris role) dans res.locals
-    res.locals.user = decoded;
+    // Vérifier le solde de tokens
+    if (user.tokens <= 0) {
+      res.status(401).json({ message: 'Crédit épuisé, requête non autorisée.' });
+      return; // On interrompt l'exécution, mais on ne "renvoie" rien.
+    }
+
+    // Stocker l'utilisateur dans res.locals si besoin
+    res.locals.user = user;
 
     next();
   } catch (error) {
