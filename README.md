@@ -1,4 +1,4 @@
-# Backend Scacchi
+# Backend Scacchi corso di PROGRAMMAZIONE AVANZATA A.A. 2024/2025
 
 ## Obiettivo del progetto
 
