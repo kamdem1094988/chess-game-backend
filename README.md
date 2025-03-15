@@ -1,4 +1,15 @@
 # Backend Scacchi (corso di PROGRAMMAZIONE AVANZATA A.A. 2024/2025)
+# Backend Scacchi
+
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](#)
+[![Docs](https://img.shields.io/badge/docs-passing-brightgreen.svg)](#)
+[![OpenAPI Test Practices](https://img.shields.io/badge/openapi%20test%20practices-passing-brightgreen.svg)](#)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](#)
+[![Docker Compose](https://img.shields.io/badge/docker--compose-ready-blue.svg)](#)
+[![Chat on Slack](https://img.shields.io/badge/chat-join%20now-blue.svg)](#)
+
+
+Bienvenue dans le projet **Backend Scacchi**...
 
 
 ## Obiettivo del progetto
