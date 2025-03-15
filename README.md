@@ -21,7 +21,7 @@ Il diagramma dei casi d’uso illustra le funzionalità principali:
 - **Gestione Credito:** Il sistema addebita token per la creazione della partita e per ogni mossa; l’admin può ricaricare il credito di un utente.
 - **Ranking:** La rotta pubblica mostra il ranking dei giocatori.
 ![image](https://github.com/user-attachments/assets/f2313c99-f31a-4872-9474-a4df4bbdf77b)
-*Nota: Inserire l’immagine del diagramma (ad es. `docs/UseCaseDiagram.png`)*
+
 
 #### Diagramma delle sequenze
 
