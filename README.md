@@ -1,5 +1,6 @@
 # Backend Scacchi (corso di PROGRAMMAZIONE AVANZATA A.A. 2024/2025)
 
+
 ## Obiettivo del progetto
 
 Il progetto ha lo scopo di realizzare un sistema backend per la gestione di un gioco di scacchi. L’utente autenticato, tramite token JWT, gioca contro un’intelligenza artificiale utilizzando il package [js-chess-engine](https://www.npmjs.com/package/js-chess-engine). Il sistema consente di:
