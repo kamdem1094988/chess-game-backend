@@ -56,13 +56,9 @@ Per avviare il progetto, posizionati nella root del progetto (dove si trovano i 
 ```bash
 docker-compose up --build
 
-
-## Avvio del progetto mediante Docker Compose ![image](https://github.com/user-attachments/assets/560d49aa-a037-4b0f-8144-30692ff11d7d)
-
-
 Per avviare il progetto, assicurati di essere nella **root** (la cartella principale del progetto contenente `Dockerfile`, `docker-compose.yml`, `.env`, ecc.) ed esegui:
 
-```bash
+```terminal
 docker-compose up --build
 # chess-game-backend
  
