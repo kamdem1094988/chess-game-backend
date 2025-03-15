@@ -9,7 +9,7 @@
 [![Chat on Slack](https://img.shields.io/badge/chat-join%20now-blue.svg)](#)
 
 
-Bienvenue dans le projet **Backend Scacchi**...
+
 
 
 ## Obiettivo del progetto
