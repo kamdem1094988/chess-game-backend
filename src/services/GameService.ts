@@ -1,40 +1,46 @@
 // src/services/GameService.ts
 
-// Utiliser require pour importer js-chess-engine
-const jsChessEngine = require('js-chess-engine');
+// Utilizziamo require per importare js-chess-engine e forzare il tipaggio come "any"
+const jsChessEngine: any = require('js-chess-engine');
 
-// Import des modèles User et Game
+// Import dei modelli User e Game
 import User from '../models/User';
 import Game from '../models/Game';
 
 /**
- * Service gérant la logique métier pour la création des parties d'échecs.
+ * GameService gestisce la logica di business per la creazione delle partite di scacchi.
+ *
+ * Regole di deduzione:
+ * - Vengono addebitati 0,50 token al momento della creazione della partita.
+ * - L'utente deve avere almeno 0,50 token per poter creare una partita.
+ * - Una volta avviata la partita, anche se il credito scende sotto zero, la partita può continuare.
  */
 export class GameService {
-  /**
-   * Crée une nouvelle partie d'échecs pour un utilisateur donné.
-   *
-   * @param userId - L'identifiant de l'utilisateur créant la partie.
-   * @param difficulty - Le niveau de difficulté choisi ('easy', 'medium' ou 'hard').
-   * @returns Une promesse résolue avec l'objet Game créé.
-   * @throws Une erreur si l'utilisateur n'existe pas ou si son crédit est insuffisant.
-   */
-  static async createGame(userId: number, difficulty: 'easy' | 'medium' | 'hard') {
-    // Récupération de l'utilisateur dans la base de données
+  static async createGame(userId: number, difficulty: 'easy' | 'medium' | 'hard'): Promise<any> {
+    // 1. Recupero dell'utente dal database tramite il suo ID
     const user = await User.findByPk(userId);
     if (!user || user.tokens < 0.50) {
-      throw new Error('Crédit insuffisant pour créer une partie.');
+      // Se l'utente non esiste o non ha abbastanza token, viene lanciata un'eccezione
+      throw new Error('Crédito insufficiente per creare una partita.');
     }
 
-    // Déduction du coût de création (0.50 tokens)
+    // 2. Log di controllo per verificare i dati dell'utente e il livello di difficoltà ricevuto
+    console.log("Utente recuperato:", user.toJSON());
+    console.log("Difficoltà:", difficulty);
+
+    // 3. Deduzione del costo di creazione: 0,50 token
     user.tokens -= 0.50;
     await user.save();
+    console.log("Token dopo la deduzione:", user.tokens);
 
-    // Initialisation d'une nouvelle partie d'échecs avec js-chess-engine via require
+    // 4. Inizializzazione di una nuova partita di scacchi utilizzando js-chess-engine
     const gameEngine = new jsChessEngine.Game();
-    const initialState = gameEngine.exportJson();
+    const initialState = gameEngine.exportJson();  // Otteniamo lo stato iniziale del gioco in formato JSON
+    console.log("Stato iniziale della partita:", initialState);
 
-    // Création de la partie dans la base de données
+    // 5. Creazione della partita nel database
+    //    Vengono salvati l'ID dell'utente, la difficoltà, lo stato (convertito in stringa JSON),
+    //    lo status (inizialmente 'active') e i token spesi (0,50 token)
     const game = await Game.create({
       userId: user.id,
       difficulty,
@@ -42,7 +48,9 @@ export class GameService {
       status: 'active',
       tokensSpent: 0.50
     });
+    console.log("Partita creata:", game.toJSON());
 
+    // 6. Restituisce l'oggetto partita creato
     return game;
   }
 }
