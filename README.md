@@ -180,5 +180,5 @@ Poiché utilizziamo SQLite per il database, non è necessario un container separ
    JWT_SECRET=laTuaChiaveSegreta
    DATABASE_URL=sqlite://./database.sqlite
 
-   
+   **nel terminale di virtual studuo:** 
      docker-compose up --build
