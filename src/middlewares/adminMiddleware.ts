@@ -1,22 +1,33 @@
 // src/middlewares/adminMiddleware.ts
 
 import { Request, Response, NextFunction } from 'express';
+import { StatusCodes } from 'http-status-codes'; // Import de la librairie pour les codes HTTP
 
 /**
- * Middleware che verifica che l'utente connesso sia un amministratore.
- * Si assume che il middleware JWT abbia già memorizzato le informazioni dell'utente in res.locals.user.
+ * Enum per definire i ruoli degli utenti.
+ * In questo modo, anziché usare stringhe "admin" o "user" in maniera sparsa, 
+ * si utilizza un enum per centralizzare e standardizzare i ruoli.
+ */
+export enum UserRole {
+  Admin = 'admin',
+  User = 'user',
+}
+
+/**
+ * Middleware che verifica se l'utente connesso è un amministratore.
+ * Si assume che il middleware JWT abbia già impostato le informazioni dell'utente in res.locals.user.
  *
  * Passaggi:
- * 1. Controlla se res.locals.user esiste e se il suo ruolo è "admin".
+ * 1. Verifica se res.locals.user esiste e se il suo ruolo corrisponde a UserRole.Admin.
  * 2. Se l'utente è amministratore, chiama next() per passare il controllo al middleware successivo.
- * 3. Altrimenti, restituisce una risposta con status 403 e un messaggio di errore.
+ * 3. Altrimenti, restituisce una risposta con status 403 (FORBIDDEN) e un messaggio di errore.
  */
 export const adminMiddleware = (req: Request, res: Response, next: NextFunction): void => {
-  if (res.locals.user && res.locals.user.role === 'admin') {
-    // L'utente è amministratore: continua l'esecuzione della catena di middleware
+  if (res.locals.user && res.locals.user.role === UserRole.Admin) {
+    // L'utente ha i privilegi amministrativi: passa al middleware successivo
     next();
   } else {
-    // L'utente non ha i privilegi amministrativi: restituisce un errore 403 (Accesso negato)
-    res.status(403).json({ message: "Accesso negato: privilegi amministrativi richiesti." });
+    // L'utente non ha i privilegi amministrativi: restituisce un errore 403 (FORBIDDEN)
+    res.status(StatusCodes.FORBIDDEN).json({ message: "Accesso negato: privilegi amministrativi richiesti." });
   }
 };
