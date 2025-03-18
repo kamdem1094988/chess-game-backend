@@ -114,11 +114,11 @@ Il diagramma delle sequenze descrive il flusso per la creazione di una partita e
 
 ## Application Programming Interface (API)
 
-Le API implementate, la loro descrizione funzionale, le relative rotte, i payload, i risultati ed i possibili codici di errore sono consultabili accedendo alla documentazione interattiva **Swagger**. Utilizzando questa interfaccia grafica intuitiva, è possibile:
-- Visualizzare in dettaglio ogni endpoint.
-- Conoscere i parametri da inviare (payload).
+Le API implementate, la loro descrizione funzionale, le relative rotte, i payload, i risultati ed i possibili codici di errore sono testati con **postman**. Utilizzando questa interfaccia grafica intuitiva, è possibile:
+- Visualizzare in dettaglio ogni endpoint e  la sua risposta .
+- generare e usare il JWT.
 - Esaminare i risultati e i codici di errore previsti.
-- Interagire con gli endpoint in locale per eseguire test.
+- Interagire con gli endpoint .
 
 **Scelta progettuale:**  
 È stato deciso di permettere l'utilizzo delle rotte dedicate all'utente, prive di costo, anche all'amministratore. Le rotte che prevedono un costo (ad es. creazione partita e mossa) non vengono addebitate all'amministratore, poiché quest'ultimo non possiede crediti.
