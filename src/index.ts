@@ -77,7 +77,7 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-// Avvio del server: l'app ascolta sulla porta specificata
+// Avvio del server: l'app ascolta sulla porta specificata cui la porta e 4000
 app.listen(PORT, () => {
   console.log(`Server avviato sulla porta ${PORT}`);
 });
