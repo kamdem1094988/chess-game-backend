@@ -1,4 +1,4 @@
-# Backend Scacchi (corso di PROGRAMMAZIONE AVANZATA A.A. 2024/2025)
+# Backend Scacchi (CORSO di PROGRAMMAZIONE AVANZATA A.A. 2024/2025)
 # Backend Scacchi
 
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](#)
