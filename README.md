@@ -1,4 +1,4 @@
-# Backend Scacchi (corso di PROGRAMMAZIONE AVANZATA A.A. 2024/2025)
+# Backend Scacchi (CORSO di PROGRAMMAZIONE AVANZATA A.A. 2024/2025)
 # Backend Scacchi
 
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](#)
@@ -11,7 +11,7 @@
 ---
 
 ## Obiettivo del progetto
-
+## ITA
 Il progetto ha lo scopo di realizzare un sistema backend per la gestione di un gioco di scacchi.  
 L’utente autenticato, tramite token JWT, gioca contro un’intelligenza artificiale utilizzando il package [js-chess-engine](https://www.npmjs.com/package/js-chess-engine).  
 Il sistema consente di:
@@ -20,7 +20,16 @@ Il sistema consente di:
 - Gestire e monitorare il credito (token) dell’utente: 0,50 token vengono addebitati alla creazione della partita e 0,025 per ogni mossa (anche dell’IA), con la possibilità di continuare la partita anche se il credito scende sotto zero.
 - Visualizzare lo storico delle mosse di una partita, il ranking dei giocatori e lo stato della partita (di chi è il turno, se è terminata, scacco, scacco matto, ecc.).
 - Consentire all’admin di ricaricare il credito di un utente tramite una rotta dedicata.
+## ENG
+The project aims to implement a backend system for managing a chess game.  
+The authenticated user, via a JWT token, plays against an artificial intelligence using the js-chess-engine package.  
+The system allows you to:
 
+- Create new games.
+- Make moves (both by the user and by the AI).
+- Manage and monitor the user's credit (token): 0.50 tokens are charged when a game is created and 0.025 for each move (including the AI’s moves), with the possibility to continue the game even if the credit falls below zero.
+- View the move history of a game, the players' ranking, and the game status (whose turn it is, whether it has ended, check, checkmate, etc.).
+- Allow the admin to recharge a user's credit via a dedicated endpoint.
 ---
 
 ## Ambiente operativo
