@@ -41,7 +41,7 @@ export class AdminController {
    */
   static async recharge(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      // 1. Verifica del ruolo admin:
+      // 1. Verifica del ruolo admin (admin):
       //    Se l'utente autenticato non ha il ruolo "admin", blocca la richiesta.
       if (res.locals.user?.role !== 'admin') {
         res.status(403).json({ message: 'Accesso negato. Ruolo admin richiesto.' });
